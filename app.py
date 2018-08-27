@@ -34,7 +34,7 @@ def handle_cmd(cmd):
 
 
 @app.route('/')
-def hello_world():
+def list_cmds():
     return json.dumps(CMDS)
 
 
