@@ -1,10 +1,16 @@
 
 import json
 import subprocess
+import platform
 
 from flask import Flask
 
 app = Flask(__name__)
+
+
+class PlatConfig(object):
+    _platform = platform.system()
+    encode = 'gbk' if _platform == 'Windows' else 'utf-8'
 
 
 CMDS = {
@@ -23,11 +29,11 @@ def has_cmd(cmd, cmd_list):
 
 def run_cmd(command):
     try:
-        output = subprocess.check_output(command)
+        output = subprocess.check_output(command).decode(PlatConfig.encode)
     except FileNotFoundError:
         output = "COMMAND NOT FOUND !"
     except subprocess.CalledProcessError as e:
-        output = e.output
+        output = e.output.decode(PlatConfig.encode)
     except Exception as e:
         output = e.args
     return output
@@ -45,7 +51,7 @@ def handle_cmds(cmds):
     outs = []
     for cmd in cmds:
         outs.append(handle_cmd(cmd))
-    return json.dumps(outs)
+    return ''.join(outs)
 
 
 def group_filter(cmd):
@@ -58,7 +64,10 @@ def handle_group(cmd):
 
 @app.route('/')
 def list_cmds():
-    return json.dumps(CMDS)
+    return json.dumps({
+            "COMMADS": CMDS,
+            "GROUP": GROUPS
+            })
 
 
 @app.route('/<cmd>')
