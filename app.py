@@ -28,6 +28,11 @@ def has_cmd(cmd, cmd_list):
 
 
 def run_cmd(command):
+    """
+    Run a command and return output or error message
+    :param command: shell command. (string or list)
+    :return: output the command output or error message. (string)
+    """
     try:
         output = subprocess.check_output(command).decode(PlatConfig.encode)
     except FileNotFoundError:
@@ -40,6 +45,11 @@ def run_cmd(command):
 
 
 def handle_cmd(cmd):
+    """
+    Run a alias command defined in CMDS.
+    :param cmd: alias command. (string)
+    :return: output the command output or error message. (string)
+    """
     return run_cmd(CMDS.get(cmd))
 
 
@@ -48,6 +58,11 @@ def cmd_filter(cmd):
 
 
 def handle_cmds(cmds):
+    """
+    Run multi alias commands defined in CMDS.
+    :param cmds: alias command. (list)
+    :return: output the command output or error message. (string)
+    """
     outs = []
     for cmd in cmds:
         outs.append(handle_cmd(cmd))
@@ -59,6 +74,7 @@ def group_filter(cmd):
 
 
 def handle_group(cmd):
+    """Run alias group command defined in GROUPS"""
     return handle_cmds(GROUPS.get(cmd))
 
 
