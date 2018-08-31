@@ -5,22 +5,14 @@ import platform
 
 from flask import Flask
 
+from config import CMDS, GROUPS
+
 app = Flask(__name__)
 
 
 class PlatConfig(object):
     _platform = platform.system()
     encode = 'gbk' if _platform == 'Windows' else 'utf-8'
-
-
-CMDS = {
-    "ll": ["ls", "-al"],
-    "x": "whoami"
-}
-
-GROUPS = {
-    "ll": ["ll", "x"]
-}
 
 
 def has_cmd(cmd, cmd_list):
@@ -46,7 +38,7 @@ def run_cmd(command):
 
 def handle_cmd(cmd):
     """
-    Run a alias command defined in CMDS.
+    Run an alias command defined in CMDS.
     :param cmd: alias command. (string)
     :return: output the command output or error message. (string)
     """
@@ -59,7 +51,7 @@ def cmd_filter(cmd):
 
 def handle_cmds(cmds):
     """
-    Run multi alias commands defined in CMDS.
+    Run multi aliases commands defined in CMDS.
     :param cmds: alias command. (list)
     :return: output the command output or error message. (string)
     """
